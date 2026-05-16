@@ -2,11 +2,7 @@
 
 import { useEffect, useState } from "react";
 
-interface CalendlyEmbedProps {
-  url?: string;
-}
-
-export default function CalendlyEmbed({ url }: CalendlyEmbedProps) {
+export default function CalendlyEmbed({ url }: { url?: string }) {
   const [loaded, setLoaded] = useState(false);
   const calendlyUrl =
     url ??
@@ -26,16 +22,20 @@ export default function CalendlyEmbed({ url }: CalendlyEmbedProps) {
   }, []);
 
   return (
-    <div className="w-full min-h-[700px] relative">
+    <div style={{ width: "100%", minHeight: 700, position: "relative" }}>
       {!loaded && (
-        <div className="absolute inset-0 flex items-center justify-center bg-cream-dark animate-pulse rounded-2xl">
-          <p className="font-body text-muted text-sm">Loading calendar…</p>
+        <div style={{
+          position: "absolute", inset: 0,
+          display: "flex", alignItems: "center", justifyContent: "center",
+          background: "var(--paper-2)", borderRadius: 4,
+        }}>
+          <span className="kicker" style={{ color: "var(--muted)" }}>Loading calendar…</span>
         </div>
       )}
       <div
-        className="calendly-inline-widget w-full"
+        className="calendly-inline-widget"
         data-url={calendlyUrl}
-        style={{ minWidth: "320px", height: "700px" }}
+        style={{ minWidth: 320, height: 700, width: "100%" }}
       />
     </div>
   );

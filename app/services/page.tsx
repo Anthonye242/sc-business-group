@@ -1,148 +1,93 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { ArrowRight, CheckCircle2 } from "lucide-react";
-import ServiceCard from "@/components/ServiceCard";
-import { SERVICES } from "@/lib/constants";
 
 export const metadata: Metadata = {
-  title: "Our Services",
+  title: "Services — S & C Business Group",
   description:
-    "Explore all 8 credit repair services offered by S & C Business Group LLC — from dispute collections and charge-off removal to identity restoration.",
+    "Eight focused credit restoration practice areas — from dispute collections to identity restoration. FCRA-aligned, documented, and built to move.",
 };
+
+const SERVICES = [
+  { num: "01", title: "Dispute Collections", desc: "Methodical, paper-trail-driven challenges against unverifiable collection accounts under the FCRA and FDCPA.", time: "30–90 days", scope: "Per-account dispute, escalation, and validation requests" },
+  { num: "02", title: "Charge-Off Removal", desc: "Strategic dispute and goodwill correspondence designed to remove or restructure charge-offs on your behalf.", time: "45–120 days", scope: "Direct creditor negotiation + bureau-level dispute" },
+  { num: "03", title: "Late Payment Corrections", desc: "Targeted disputes and goodwill letters to remove or repaint reported late payments where evidence supports it.", time: "30–60 days", scope: "Goodwill advocacy + bureau correction" },
+  { num: "04", title: "Repossession Challenges", desc: "Forensic review of repossession reporting — surplus, deficiency, and verification — to surface what shouldn't stand.", time: "60–120 days", scope: "Document review + dispute strategy" },
+  { num: "05", title: "Bankruptcy Guidance", desc: "Post-discharge clean-up: making sure every included account is reporting correctly and zeroing where required.", time: "60–90 days", scope: "Audit + line-item correction" },
+  { num: "06", title: "Medical Debt Assistance", desc: "Itemized challenges, HIPAA-aware disputes, and validation of medical collections that often shouldn't be there.", time: "30–60 days", scope: "Collection review + dispute" },
+  { num: "07", title: "Student Loan Review", desc: "Auditing federal and private student loan reporting — duplicate accounts, status errors, and rehabilitation paths.", time: "30–90 days", scope: "Reporting audit + servicer correspondence" },
+  { num: "08", title: "Identity Restoration", desc: "Suspect fraud or mixed files? We freeze, document, and dispute — restoring your file and your peace of mind.", time: "Varies", scope: "FTC report + dispute + monitoring" },
+];
+
+function Arrow({ size = 14 }: { size?: number }) {
+  return (
+    <svg width={size} height={size} viewBox="0 0 14 14" fill="none" stroke="currentColor" strokeWidth="1.4" className="arr">
+      <path d="M2 7h10M8 3l4 4-4 4" />
+    </svg>
+  );
+}
 
 export default function ServicesPage() {
   return (
-    <>
-      {/* Page hero */}
-      <section className="bg-brand-black pt-36 pb-20 relative overflow-hidden">
-        <div
-          className="absolute inset-0 opacity-[0.04]"
-          style={{
-            backgroundImage:
-              "linear-gradient(#8FAF8F 1px, transparent 1px), linear-gradient(90deg, #8FAF8F 1px, transparent 1px)",
-            backgroundSize: "60px 60px",
-          }}
-        />
-        <div className="absolute top-0 right-0 w-80 h-80 bg-sage opacity-10 rounded-full blur-3xl pointer-events-none translate-x-1/2 -translate-y-1/2" />
-        <div className="relative max-w-7xl mx-auto px-6 lg:px-8">
-          <p className="font-body text-sage text-xs tracking-widest uppercase font-medium mb-4">
-            What We Offer
-          </p>
-          <h1 className="font-heading text-5xl sm:text-6xl lg:text-7xl text-white mb-6 leading-tight">
-            Our Support Services
-          </h1>
-          <div className="w-12 h-0.5 bg-sage mb-6" />
-          <p className="font-body text-white/60 text-lg max-w-xl leading-relaxed">
-            We tackle every type of negative item on your credit report.
-            Personalized strategies, real results — one dispute at a time.
-          </p>
-        </div>
-      </section>
-
-      {/* Services grid */}
-      <section className="bg-cream py-20">
-        <div className="max-w-7xl mx-auto px-6 lg:px-8">
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            {SERVICES.map((service) => (
-              <ServiceCard key={service.id} {...service} />
-            ))}
+    <div className="page">
+      <section className="services-hero flush">
+        <div className="wrap">
+          <div className="grid">
+            <h1>What we <em>restore</em>.</h1>
+            <div>
+              <div className="eyebrow" style={{ marginBottom: 16 }}>Practice areas · 01 — 08</div>
+              <p>
+                Eight things we do, and very few we don&apos;t. Every engagement begins with a paid consultation —
+                we won&apos;t take work we can&apos;t move, and we won&apos;t accept a client we can&apos;t serve.
+              </p>
+            </div>
           </div>
         </div>
       </section>
 
-      {/* Process section */}
-      <section className="bg-cream-dark py-20">
-        <div className="max-w-7xl mx-auto px-6 lg:px-8">
-          <div className="max-w-2xl mx-auto text-center mb-14">
-            <p className="font-body text-sage text-xs tracking-widest uppercase font-medium mb-3">
-              How It Works
-            </p>
-            <h2 className="font-heading text-4xl sm:text-5xl text-brand-black">
-              Our Simple Process
-            </h2>
+      <section className="flush" style={{ paddingTop: 24, paddingBottom: "clamp(120px, 14vw, 192px)" }}>
+        <div className="wrap">
+          <div className="sec-label">
+            <span className="ix">i.</span>
+            <span className="ttl">Practice Areas</span>
+            <span className="spacer" />
+            <span className="meta">01 — 08</span>
           </div>
-
-          <div className="grid grid-cols-1 sm:grid-cols-3 gap-8 max-w-4xl mx-auto">
-            {[
-              {
-                step: "01",
-                title: "Book a Consultation",
-                desc: "Schedule your 30-minute call. We review your credit reports from all three bureaus together.",
-              },
-              {
-                step: "02",
-                title: "Build Your Plan",
-                desc: "We identify every negative item, prioritize disputes, and create a personalized action plan.",
-              },
-              {
-                step: "03",
-                title: "Watch Results",
-                desc: "We file disputes, follow up, and keep you updated as items are removed and your score climbs.",
-              },
-            ].map((item) => (
-              <div key={item.step} className="relative">
-                <div className="w-12 h-12 rounded-xl bg-sage text-white font-heading font-bold text-xl flex items-center justify-center mb-5">
-                  {item.step}
-                </div>
-                <h3 className="font-heading text-2xl text-brand-black mb-3">
-                  {item.title}
-                </h3>
-                <p className="font-body text-sm text-muted leading-relaxed">
-                  {item.desc}
-                </p>
+          {SERVICES.map((s) => (
+            <div className="service-detail" key={s.num}>
+              <div className="num">{s.num}</div>
+              <div>
+                <h3>{s.title}</h3>
+                <p className="desc">{s.desc}</p>
               </div>
-            ))}
-          </div>
+              <div className="meta">
+                <div className="meta-row"><b>Typical timeline</b><span>{s.time}</span></div>
+                <div className="meta-row"><b>Scope</b><span style={{ maxWidth: "26ch", textAlign: "right" }}>{s.scope}</span></div>
+                <div className="meta-row"><b>Documented</b><span>FCRA / FDCPA-aligned</span></div>
+              </div>
+            </div>
+          ))}
         </div>
       </section>
 
-      {/* Before booking note */}
-      <section className="bg-white py-14">
-        <div className="max-w-3xl mx-auto px-6 lg:px-8">
-          <div className="bg-sage/10 border border-sage-light rounded-2xl p-8">
-            <p className="font-body text-sage text-xs tracking-widest uppercase font-medium mb-3">
-              Before Your Appointment
-            </p>
-            <h3 className="font-heading text-2xl text-brand-black mb-4">
-              Please prepare the following:
-            </h3>
-            <ul className="space-y-3">
-              {[
-                "Create an account at www.experian.com and have your login ready",
-                "Have your credit reports from all 3 bureaus accessible if possible",
-                "Note any specific accounts or items you'd like to discuss",
-                "Same-day appointments are not available — please book at least 24 hours in advance",
-              ].map((item) => (
-                <li key={item} className="flex items-start gap-3">
-                  <CheckCircle2 size={16} className="text-sage shrink-0 mt-0.5" />
-                  <span className="font-body text-sm text-brand-black leading-relaxed">
-                    {item}
-                  </span>
-                </li>
-              ))}
-            </ul>
+      <section className="surface-2">
+        <div className="wrap" style={{ textAlign: "center", maxWidth: 800, margin: "0 auto" }}>
+          <div className="sec-label" style={{ justifyContent: "center", maxWidth: 640, margin: "0 auto 40px" }}>
+            <span className="ix">ii.</span>
+            <span className="ttl">Beyond the list</span>
+            <span className="spacer" />
+            <span className="meta">By exception</span>
           </div>
-        </div>
-      </section>
-
-      {/* CTA */}
-      <section className="bg-sage py-20">
-        <div className="max-w-3xl mx-auto px-6 lg:px-8 text-center">
-          <h2 className="font-heading text-4xl sm:text-5xl text-white mb-5">
-            Ready to Get Started?
+          <div className="kicker" style={{ color: "var(--muted)" }}>Don&apos;t see what you need?</div>
+          <h2 style={{ fontFamily: "var(--display)", fontSize: "clamp(40px,6vw,72px)", margin: "16px 0 24px", lineHeight: 1 }}>
+            Bring it to the <em style={{ fontStyle: "italic", color: "var(--accent-ink)" }}>consultation.</em>
           </h2>
-          <p className="font-body text-white/80 text-lg mb-8 leading-relaxed">
-            Book your consultation today. One call can change your financial future.
+          <p style={{ color: "var(--ink-soft)", maxWidth: 540, margin: "0 auto 28px" }}>
+            Our scope is deliberate, but our judgment isn&apos;t rigid. If your situation sits at the edge of what
+            we usually take on, the consult is where we figure that out — together.
           </p>
-          <Link
-            href="/contact"
-            className="inline-flex items-center gap-2 bg-white text-sage-dark hover:bg-cream font-body font-medium px-8 py-4 rounded-full transition-all duration-200 hover:gap-3"
-          >
-            Schedule Your Consultation
-            <ArrowRight size={17} />
-          </Link>
+          <Link href="/book" className="cta">Book a Consultation <Arrow /></Link>
         </div>
       </section>
-    </>
+    </div>
   );
 }

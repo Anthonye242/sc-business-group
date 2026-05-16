@@ -1,119 +1,71 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import Link from "next/link";
-import { usePathname } from "next/navigation";
-import { Menu, X } from "lucide-react";
-import { NAV_LINKS } from "@/lib/constants";
+import { usePathname, useRouter } from "next/navigation";
+
+const links = [
+  { href: "/", label: "Home" },
+  { href: "/services", label: "Services" },
+  { href: "/about", label: "About" },
+  { href: "/results", label: "Results" },
+  { href: "/book", label: "Book" },
+];
+
+function Arrow() {
+  return (
+    <svg width={14} height={14} viewBox="0 0 14 14" fill="none" stroke="currentColor" strokeWidth="1.4" className="arr">
+      <path d="M2 7h10M8 3l4 4-4 4" />
+    </svg>
+  );
+}
 
 export default function Navbar() {
   const [open, setOpen] = useState(false);
-  const [scrolled, setScrolled] = useState(false);
   const pathname = usePathname();
 
-  useEffect(() => {
-    const onScroll = () => setScrolled(window.scrollY > 20);
-    window.addEventListener("scroll", onScroll, { passive: true });
-    return () => window.removeEventListener("scroll", onScroll);
-  }, []);
-
-  useEffect(() => {
-    setOpen(false);
-  }, [pathname]);
-
   return (
-    <header
-      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
-        scrolled
-          ? "bg-cream/95 backdrop-blur-sm shadow-sm border-b border-cream-dark"
-          : "bg-transparent"
-      }`}
-    >
-      <div className="max-w-7xl mx-auto px-6 lg:px-8">
-        <div className="flex items-center justify-between h-20">
-          {/* Logo */}
-          <Link href="/" className="flex items-center gap-3 group">
-            <div className="w-10 h-10 rounded-full bg-sage flex items-center justify-center shrink-0">
-              <span className="text-white font-heading font-bold text-sm tracking-wide">
-                SC
-              </span>
-            </div>
-            <div className="leading-tight">
-              <p className="font-heading font-semibold text-brand-black text-base tracking-wide leading-none">
-                S & C Business
-              </p>
-              <p className="text-muted text-xs font-body tracking-widest uppercase leading-none mt-0.5">
-                Group LLC
-              </p>
-            </div>
-          </Link>
-
-          {/* Desktop nav */}
-          <nav className="hidden lg:flex items-center gap-8">
-            {NAV_LINKS.map((link) => (
-              <Link
-                key={link.href}
-                href={link.href}
-                className={`font-body text-sm tracking-wide transition-colors duration-200 ${
-                  pathname === link.href
-                    ? "text-sage font-medium"
-                    : "text-brand-black hover:text-sage"
-                }`}
-              >
-                {link.label}
-              </Link>
-            ))}
-          </nav>
-
-          {/* Desktop CTA */}
-          <div className="hidden lg:flex">
-            <Link
-              href="/contact"
-              className="bg-sage hover:bg-sage-dark text-white font-body text-sm font-medium px-6 py-2.5 rounded-full transition-colors duration-200"
-            >
-              Book Now
-            </Link>
+    <nav className="nav">
+      <div className="wrap nav-inner">
+        <Link href="/" className="brand">
+          <div className="brand-mark">
+            S<span style={{ fontSize: 11, margin: "0 1px", color: "var(--accent-soft)" }}>&amp;</span>C
           </div>
+          <div className="brand-name">
+            <b>S &amp; C Business Group</b>
+            <span>Credit Restoration · Est. 2021</span>
+          </div>
+        </Link>
 
-          {/* Mobile menu button */}
-          <button
-            onClick={() => setOpen((v) => !v)}
-            className="lg:hidden p-2 text-brand-black hover:text-sage transition-colors"
-            aria-label="Toggle menu"
-          >
-            {open ? <X size={22} /> : <Menu size={22} />}
-          </button>
-        </div>
-      </div>
-
-      {/* Mobile drawer */}
-      <div
-        className={`lg:hidden overflow-hidden transition-all duration-300 ease-in-out ${
-          open ? "max-h-screen opacity-100" : "max-h-0 opacity-0"
-        }`}
-      >
-        <div className="bg-cream border-t border-cream-dark px-6 pb-6 pt-4 flex flex-col gap-4">
-          {NAV_LINKS.map((link) => (
-            <Link
-              key={link.href}
-              href={link.href}
-              className={`font-body text-base py-1 border-b border-cream-dark transition-colors ${
-                pathname === link.href
-                  ? "text-sage font-medium"
-                  : "text-brand-black hover:text-sage"
-              }`}
-            >
-              {link.label}
+        <div className="nav-links">
+          {links.map((l) => (
+            <Link key={l.href} href={l.href} className={pathname === l.href ? "active" : ""}>
+              {l.label}
             </Link>
           ))}
-          <Link
-            href="/contact"
-            className="mt-2 bg-sage hover:bg-sage-dark text-white font-body text-sm font-medium px-6 py-3 rounded-full text-center transition-colors duration-200"
-          >
-            Book Now
+        </div>
+
+        <Link href="/book" className="cta">
+          Book a Consult <Arrow />
+        </Link>
+      </div>
+
+      {/* Mobile menu — simple toggle */}
+      {open && (
+        <div style={{
+          background: "var(--paper)", borderTop: ".5px solid var(--line)",
+          padding: "20px var(--gutter) 28px", display: "flex", flexDirection: "column", gap: 18,
+        }}>
+          {links.map((l) => (
+            <Link key={l.href} href={l.href} style={{ fontSize: 15, fontFamily: "var(--body)" }} onClick={() => setOpen(false)}>
+              {l.label}
+            </Link>
+          ))}
+          <Link href="/book" className="cta" style={{ justifyContent: "center" }} onClick={() => setOpen(false)}>
+            Book a Consult <Arrow />
           </Link>
         </div>
-      </div>
-    </header>
+      )}
+    </nav>
   );
 }

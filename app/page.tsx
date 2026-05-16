@@ -1,124 +1,214 @@
+"use client";
+
 import Link from "next/link";
-import Image from "next/image";
-import {
-  ArrowRight,
-  ShieldCheck,
-  TrendingUp,
-  Users,
-  CheckCircle2,
-  Star,
-  ChevronDown,
-} from "lucide-react";
-import ServiceCard from "@/components/ServiceCard";
-import TestimonialCard from "@/components/TestimonialCard";
-import { SERVICES, TESTIMONIALS, STATS } from "@/lib/constants";
+import { useTheme } from "@/lib/theme";
 
-export default function HomePage() {
-  const featuredServices = SERVICES.slice(0, 3);
-  const featuredTestimonials = TESTIMONIALS.slice(0, 3);
-
+function Arrow({ size = 14 }: { size?: number }) {
   return (
-    <>
-      {/* Hero */}
-      <section className="relative min-h-screen flex flex-col justify-center bg-brand-black overflow-hidden">
-        {/* Subtle grid pattern */}
-        <div
-          className="absolute inset-0 opacity-[0.04]"
-          style={{
-            backgroundImage:
-              "linear-gradient(#8FAF8F 1px, transparent 1px), linear-gradient(90deg, #8FAF8F 1px, transparent 1px)",
-            backgroundSize: "60px 60px",
-          }}
-        />
-        <div className="absolute top-1/4 right-1/4 w-96 h-96 bg-sage opacity-10 rounded-full blur-3xl pointer-events-none" />
-        <div className="absolute bottom-1/4 left-1/4 w-64 h-64 bg-sage-light opacity-5 rounded-full blur-3xl pointer-events-none" />
+    <svg width={size} height={size} viewBox="0 0 14 14" fill="none" stroke="currentColor" strokeWidth="1.4" className="arr">
+      <path d="M2 7h10M8 3l4 4-4 4" />
+    </svg>
+  );
+}
 
-        <div className="relative max-w-7xl mx-auto px-6 lg:px-8 pt-32 pb-24">
-          <div className="max-w-3xl">
-            <div className="inline-flex items-center gap-2 mb-8">
-              <div className="w-8 h-px bg-sage" />
-              <span className="font-body text-sage text-xs tracking-widest uppercase font-medium">
-                S & C Business Group LLC
-              </span>
-            </div>
+const SERVICES = [
+  { num: "01", title: "Dispute Collections", desc: "Methodical, paper-trail-driven challenges against unverifiable collection accounts under the FCRA and FDCPA." },
+  { num: "02", title: "Charge-Off Removal", desc: "Strategic dispute and goodwill correspondence designed to remove or restructure charge-offs on your behalf." },
+  { num: "03", title: "Late Payment Corrections", desc: "Targeted disputes and goodwill letters to remove or repaint reported late payments where evidence supports it." },
+  { num: "04", title: "Repossession Challenges", desc: "Forensic review of repossession reporting — surplus, deficiency, and verification — to surface what shouldn't stand." },
+  { num: "05", title: "Bankruptcy Guidance", desc: "Post-discharge clean-up: making sure every included account is reporting correctly and zeroing where required." },
+  { num: "06", title: "Medical Debt Assistance", desc: "Itemized challenges, HIPAA-aware disputes, and validation of medical collections that often shouldn't be there." },
+];
 
-            <h1 className="font-heading font-semibold text-white mb-6 leading-[1.08]">
-              <span className="block text-5xl sm:text-6xl lg:text-7xl">
-                Repair Your Credit.
-              </span>
-              <span className="block text-5xl sm:text-6xl lg:text-7xl text-sage mt-1">
-                Reclaim Your Life.
-              </span>
-            </h1>
-
-            <div className="flex items-center gap-4 mb-8">
-              <div className="w-16 h-0.5 bg-sage" />
-              <div className="w-2 h-2 rounded-full bg-sage" />
-              <div className="w-8 h-0.5 bg-sage/40" />
-            </div>
-
-            <p className="font-body text-white/70 text-lg leading-relaxed max-w-xl mb-10">
-              Professional credit restoration services that dispute negative items,
-              remove charge-offs, and put you on the path to financial freedom.
+function HeroEditorial() {
+  return (
+    <section className="hero hero-editorial flush">
+      <div className="wrap">
+        <div className="eyebrow">A boutique credit restoration practice · Est. 2021</div>
+        <div className="row">
+          <h1 className="display">
+            Restore your<br />credit.<br /><em style={{ fontStyle: "italic", color: "var(--accent-ink)" }}>Reclaim</em> your<br />financial freedom.
+          </h1>
+          <div className="right">
+            <div className="hero-rule" />
+            <p className="lede">
+              We work with a small roster of clients each quarter — disputing the inaccurate,
+              correcting the misreported, and rebuilding what&apos;s been broken. Quietly. Precisely. On record.
             </p>
-
-            <div className="flex flex-col sm:flex-row gap-4">
-              <Link
-                href="/contact"
-                className="inline-flex items-center justify-center gap-2 bg-sage hover:bg-sage-dark text-white font-body font-medium px-8 py-4 rounded-full transition-all duration-200 hover:gap-3"
-              >
-                Book a Consultation
-                <ArrowRight size={17} />
-              </Link>
-              <Link
-                href="/services"
-                className="inline-flex items-center justify-center gap-2 border border-white/20 hover:border-sage text-white hover:text-sage font-body font-medium px-8 py-4 rounded-full transition-all duration-200"
-              >
-                View Our Services
-              </Link>
+            <div style={{ display: "flex", gap: 12, marginTop: 8 }}>
+              <Link href="/book" className="cta">Book a Consult <Arrow /></Link>
+              <Link href="/services" className="cta ghost">Our Services</Link>
             </div>
-
-            <p className="font-body text-white/40 text-xs mt-6 flex items-center gap-1.5">
-              <CheckCircle2 size={12} className="text-sage" />
-              30-minute consultation · $50 · Phone call
-            </p>
+            <div style={{ display: "flex", gap: 32, marginTop: 32, paddingTop: 24, borderTop: ".5px solid var(--line)", width: "100%" }}>
+              <div>
+                <div className="display" style={{ fontSize: 38 }}>2,400<span style={{ color: "var(--accent-ink)" }}>+</span></div>
+                <div className="kicker" style={{ color: "var(--muted)", marginTop: 6 }}>Clients served</div>
+              </div>
+              <div>
+                <div className="display" style={{ fontSize: 38 }}>+118<span style={{ color: "var(--accent-ink)" }}>pts</span></div>
+                <div className="kicker" style={{ color: "var(--muted)", marginTop: 6 }}>Avg. score lift</div>
+              </div>
+            </div>
           </div>
         </div>
+      </div>
+    </section>
+  );
+}
 
-        <div className="absolute bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 text-white/30 animate-bounce">
-          <ChevronDown size={20} />
+function HeroStack() {
+  return (
+    <section className="hero hero-stack flush">
+      <div className="wrap">
+        <div className="stack-eyebrow">
+          <span className="kicker">S &amp; C Business Group · Est. 2021</span>
+          <span style={{ flex: 1, height: ".5px", background: "var(--line)" }} />
+          <span className="kicker">Credit Restoration · Nationwide</span>
+        </div>
+        <h1 className="display">
+          <div className="h1-row"><span className="num">i.</span> Restore</div>
+          <div className="h1-row"><span className="num">ii.</span> <em style={{ fontStyle: "italic", color: "var(--accent-ink)" }}>Rebuild</em></div>
+          <div className="h1-row"><span className="num">iii.</span> Reclaim.</div>
+        </h1>
+        <div style={{ display: "grid", gridTemplateColumns: "1.4fr 1fr", gap: 48, marginTop: 56, alignItems: "end" }}>
+          <p className="lede" style={{ fontSize: 19, maxWidth: "52ch" }}>
+            A two-woman credit restoration practice, working with a deliberately small roster of clients
+            each quarter. We dispute what&apos;s inaccurate, correct what&apos;s misreported, and put the law to
+            work on your behalf — file by file, line by line.
+          </p>
+          <div style={{ display: "flex", gap: 12, justifyContent: "flex-end" }}>
+            <Link href="/book" className="cta">Book a Consult <Arrow /></Link>
+            <Link href="/about" className="cta ghost">Meet the Founders</Link>
+          </div>
+        </div>
+        <div className="stats">
+          {[
+            { n: <>2,400<span style={{ color: "var(--accent-ink)" }}>+</span></>, l: "Clients served" },
+            { n: <>+118<span style={{ color: "var(--accent-ink)" }}>pts</span></>, l: "Avg. score lift, 6 mo." },
+            { n: <>94<span style={{ color: "var(--accent-ink)" }}>%</span></>, l: "Dispute success rate" },
+            { n: <>48</>, l: "States served" },
+          ].map((s, i) => (
+            <div key={i}>
+              <div className="n">{s.n}</div>
+              <div className="l">{s.l}</div>
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+}
+
+function HeroMarquee() {
+  const items = ["Restore Your Credit", "Reclaim Your Freedom", "Bonded & Insured", "CROA Compliant", "Est. 2021", "By Appointment"];
+  return (
+    <section className="hero hero-marquee flush">
+      <div className="mq">
+        <div className="mq-track">
+          {[...items, ...items].map((t, i) => <span key={i}>{t}</span>)}
+        </div>
+      </div>
+      <div className="wrap">
+        <div className="grid">
+          <div>
+            <div className="eyebrow" style={{ marginBottom: 28 }}>S &amp; C Business Group · Credit Restoration</div>
+            <h1 className="display">The quiet<br />work of <em style={{ fontStyle: "italic", color: "var(--accent-ink)" }}>repair</em>.</h1>
+            <p className="lede" style={{ marginTop: 28, maxWidth: "44ch" }}>
+              We don&apos;t promise miracles. We promise method — a deliberate, documented restoration
+              process built on the same federal protections every consumer is entitled to.
+            </p>
+            <div style={{ display: "flex", gap: 12, marginTop: 28 }}>
+              <Link href="/book" className="cta">Book a Consult <Arrow /></Link>
+              <Link href="/services" className="cta ghost">Our Services</Link>
+            </div>
+          </div>
+          <div className="meta">
+            {[
+              { k: "Practice", v: <>Two partners. <em style={{ fontStyle: "italic", color: "var(--accent-ink)" }}>One roster.</em></> },
+              { k: "Method", v: <>FCRA. FDCPA. <em style={{ fontStyle: "italic", color: "var(--accent-ink)" }}>Paperwork.</em></> },
+              { k: "Result", v: <>+118 pts <em style={{ fontStyle: "italic", color: "var(--accent-ink)" }}>average.</em></> },
+            ].map((b) => (
+              <div key={b.k} className="meta-block">
+                <div className="kicker" style={{ color: "var(--muted)" }}>{b.k}</div>
+                <div style={{ fontFamily: "var(--display)", fontSize: 34, marginTop: 8, lineHeight: 1.05 }}>{b.v}</div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+export default function Home() {
+  const { heroVariant } = useTheme();
+  const Hero = heroVariant === "stack" ? HeroStack : heroVariant === "marquee" ? HeroMarquee : HeroEditorial;
+
+  return (
+    <div className="page">
+      <Hero />
+
+      {/* Services */}
+      <section>
+        <div className="wrap">
+          <div className="sec-label">
+            <span className="ix">i.</span>
+            <span className="ttl">Practice</span>
+            <span className="spacer" />
+            <span className="meta">01 — 08</span>
+          </div>
+          <div className="sec-head">
+            <h2>What we <em>restore</em>.</h2>
+            <div className="meta">
+              <div className="eyebrow">Services · 01 — 08</div>
+              <p>Eight focused practice areas. We don&apos;t dabble — every service is documented, FCRA-aligned, and built around the kind of evidence that holds up at the bureau.</p>
+            </div>
+          </div>
+          <div className="services">
+            {SERVICES.map((s) => (
+              <Link href="/services" key={s.num} className="service">
+                <div className="num">{s.num}</div>
+                <div className="body">
+                  <h3>{s.title}</h3>
+                  <p>{s.desc}</p>
+                </div>
+                <div className="arr"><Arrow size={18} /></div>
+              </Link>
+            ))}
+          </div>
+          <div style={{ marginTop: 36, display: "flex", justifyContent: "flex-end" }}>
+            <Link href="/services" className="cta ghost">All eight services <Arrow /></Link>
+          </div>
         </div>
       </section>
 
-      {/* Trust bar */}
-      <section className="bg-white border-b border-cream-dark">
-        <div className="max-w-7xl mx-auto px-6 lg:px-8 py-10">
-          <div className="grid grid-cols-1 sm:grid-cols-3 gap-8">
+      {/* Process */}
+      <section className="surface-2">
+        <div className="wrap">
+          <div className="sec-label">
+            <span className="ix">ii.</span>
+            <span className="ttl">Method</span>
+            <span className="spacer" />
+            <span className="meta">Four phases</span>
+          </div>
+          <div className="sec-head">
+            <h2>How the work <em>moves</em>.</h2>
+            <div className="meta">
+              <div className="eyebrow">Process</div>
+              <p>A four-phase restoration. We move methodically, communicate openly, and never promise what we can&apos;t document.</p>
+            </div>
+          </div>
+          <div className="process">
             {[
-              {
-                icon: ShieldCheck,
-                title: "Licensed & Trusted",
-                sub: "Professional credit repair services",
-              },
-              {
-                icon: TrendingUp,
-                title: "Real Results",
-                sub: "Verified score improvements for our clients",
-              },
-              {
-                icon: Users,
-                title: "Personalized Care",
-                sub: "Tailored strategies for your unique situation",
-              },
-            ].map(({ icon: Icon, title, sub }) => (
-              <div key={title} className="flex items-center gap-4">
-                <div className="w-12 h-12 rounded-full bg-sage/10 flex items-center justify-center shrink-0">
-                  <Icon size={22} className="text-sage" />
-                </div>
-                <div>
-                  <p className="font-heading text-xl text-brand-black">{title}</p>
-                  <p className="font-body text-xs text-muted mt-0.5">{sub}</p>
-                </div>
+              ["i.", "Consult", "A 30-minute call. We pull your report, audit what we see, and tell you — honestly — whether we can help."],
+              ["ii.", "Audit", "A line-by-line forensic review of all three bureaus. We mark every inaccuracy, every weak link, every leverage point."],
+              ["iii.", "Dispute", "Round-by-round disputes, validation requests, and direct correspondence — escalated until items move or are verified."],
+              ["iv.", "Rebuild", "Once your report is clean, we coach you on the habits and instruments that turn 700s into 800s — for good."],
+            ].map(([n, t, p]) => (
+              <div className="step" key={String(n)}>
+                <div className="n">{n}</div>
+                <h4>{t}</h4>
+                <p>{p}</p>
               </div>
             ))}
           </div>
@@ -126,168 +216,52 @@ export default function HomePage() {
       </section>
 
       {/* Stats */}
-      <section className="bg-cream-dark">
-        <div className="max-w-7xl mx-auto px-6 lg:px-8 py-16">
-          <div className="grid grid-cols-2 lg:grid-cols-4 gap-8">
-            {STATS.map((stat) => (
-              <div key={stat.label} className="text-center">
-                <p className="font-heading text-5xl font-bold text-sage mb-2">
-                  {stat.value}
-                </p>
-                <p className="font-body text-sm text-muted">{stat.label}</p>
-              </div>
-            ))}
+      <section>
+        <div className="wrap">
+          <div className="sec-label">
+            <span className="ix">iii.</span>
+            <span className="ttl">Record</span>
+            <span className="spacer" />
+            <span className="meta">As of Q2 / 2026</span>
           </div>
-        </div>
-      </section>
-
-      {/* Services preview */}
-      <section className="bg-cream py-24">
-        <div className="max-w-7xl mx-auto px-6 lg:px-8">
-          <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-6 mb-14">
+          <div className="statband">
             <div>
-              <p className="font-body text-sage text-xs tracking-widest uppercase font-medium mb-3">
-                What We Do
-              </p>
-              <h2 className="font-heading text-4xl sm:text-5xl text-brand-black">
-                Our Support Services
-              </h2>
+              <div className="big"><em>2,400</em>+</div>
+              <div className="lbl">Clients served since 2021, by appointment only.</div>
             </div>
-            <Link
-              href="/services"
-              className="inline-flex items-center gap-2 font-body text-sm text-sage hover:gap-3 transition-all font-medium shrink-0"
-            >
-              See all 8 services <ArrowRight size={15} />
-            </Link>
-          </div>
-
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            {featuredServices.map((service) => (
-              <ServiceCard key={service.id} {...service} />
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* About teaser */}
-      <section className="bg-brand-black py-24">
-        <div className="max-w-7xl mx-auto px-6 lg:px-8">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
             <div>
-              <p className="font-body text-sage text-xs tracking-widest uppercase font-medium mb-4">
-                About Us
-              </p>
-              <h2 className="font-heading text-4xl sm:text-5xl text-white mb-6 leading-tight">
-                Two Women on a Mission to Fix Your Credit
-              </h2>
-              <div className="w-12 h-0.5 bg-sage mb-8" />
-              <blockquote className="font-heading text-2xl italic text-white/80 leading-relaxed mb-8">
-                &ldquo;We started this business because we believe everyone deserves
-                access to financial freedom — no matter where they&apos;re starting from.&rdquo;
-              </blockquote>
-              <p className="font-body text-white/60 leading-relaxed mb-10">
-                S & C Business Group LLC was founded by two driven women who saw
-                firsthand how damaged credit holds people back from housing,
-                vehicles, and opportunities. We built this company to be the
-                resource we wish existed.
-              </p>
-              <Link
-                href="/about"
-                className="inline-flex items-center gap-2 bg-sage hover:bg-sage-dark text-white font-body text-sm font-medium px-7 py-3 rounded-full transition-all duration-200 hover:gap-3"
-              >
-                Meet the Team <ArrowRight size={15} />
-              </Link>
+              <div className="big">+<em>118</em></div>
+              <div className="lbl">Average score improvement over six months of active work.</div>
             </div>
-
-            {/* Partner photos */}
-            <div className="flex gap-4 justify-center">
-              {[
-                { src: "/images/partner-courtney.png", name: "Courtney B.", offset: "mt-0" },
-                { src: "/images/partner-unknown.png", name: "Co-Founder", offset: "mt-10" },
-              ].map((p) => (
-                <div key={p.name} className={`flex-1 max-w-[200px] ${p.offset}`}>
-                  <div className="aspect-[3/4] rounded-2xl border border-sage/30 relative overflow-hidden shadow-xl">
-                    <Image
-                      src={p.src}
-                      alt={p.name}
-                      fill
-                      className="object-cover object-top"
-                      sizes="200px"
-                    />
-                    <div className="absolute inset-0 bg-gradient-to-t from-brand-black/50 to-transparent" />
-                    <div className="absolute bottom-3 left-0 right-0 text-center">
-                      <p className="font-heading text-white text-sm">{p.name}</p>
-                    </div>
-                  </div>
-                </div>
-              ))}
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* Testimonials teaser */}
-      <section className="bg-cream py-24">
-        <div className="max-w-7xl mx-auto px-6 lg:px-8">
-          <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-6 mb-14">
             <div>
-              <p className="font-body text-sage text-xs tracking-widest uppercase font-medium mb-3">
-                Client Results
-              </p>
-              <h2 className="font-heading text-4xl sm:text-5xl text-brand-black">
-                Real People, Real Progress
-              </h2>
+              <div className="big"><em>94</em>%</div>
+              <div className="lbl">Dispute success rate across the items we take on.</div>
             </div>
-            <Link
-              href="/testimonials"
-              className="inline-flex items-center gap-2 font-body text-sm text-sage hover:gap-3 transition-all font-medium shrink-0"
-            >
-              Read all stories <ArrowRight size={15} />
-            </Link>
-          </div>
-
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            {featuredTestimonials.map((t) => (
-              <TestimonialCard key={t.id} {...t} />
-            ))}
           </div>
         </div>
       </section>
 
-      {/* CTA banner */}
-      <section className="bg-sage py-20">
-        <div className="max-w-4xl mx-auto px-6 lg:px-8 text-center">
-          <div className="flex justify-center mb-6">
-            <div className="flex gap-0.5">
-              {Array.from({ length: 5 }).map((_, i) => (
-                <Star key={i} size={18} className="fill-white text-white" />
-              ))}
-            </div>
+      {/* CTA */}
+      <section className="surface-ink">
+        <div className="wrap" style={{ textAlign: "center" }}>
+          <div className="sec-label" style={{ justifyContent: "center", maxWidth: 640, margin: "0 auto 56px" }}>
+            <span className="ix">iv.</span>
+            <span className="ttl">Begin</span>
+            <span className="spacer" />
+            <span className="meta">30 min · $50</span>
           </div>
-          <h2 className="font-heading text-4xl sm:text-5xl lg:text-6xl text-white mb-5 leading-tight">
-            Ready to Reclaim Your Credit?
+          <h2 style={{ fontFamily: "var(--display)", fontSize: "clamp(48px,8vw,108px)", margin: "0 auto 32px", maxWidth: "16ch", lineHeight: .98, letterSpacing: "-.015em" }}>
+            The first <em style={{ fontStyle: "italic", color: "var(--accent-soft)" }}>thirty minutes</em> are everything.
           </h2>
-          <p className="font-body text-white/80 text-lg mb-10 max-w-xl mx-auto leading-relaxed">
-            Schedule your consultation today and take the first step toward the
-            financial freedom you deserve. No more denials. No more worry.
+          <p style={{ color: "rgba(245,240,232,.7)", maxWidth: "56ch", margin: "0 auto 36px", fontSize: 17 }}>
+            Bring your Experian login and your questions. We&apos;ll tell you — plainly — what we see, what&apos;s possible,
+            and what it will cost. Same-day appointments aren&apos;t available; thoughtful work isn&apos;t rushed.
           </p>
-          <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <Link
-              href="/contact"
-              className="inline-flex items-center justify-center gap-2 bg-white text-sage-dark hover:bg-cream font-body font-medium px-8 py-4 rounded-full transition-all duration-200 hover:gap-3"
-            >
-              Book Your Consultation
-              <ArrowRight size={17} />
-            </Link>
-            <Link
-              href="/services"
-              className="inline-flex items-center justify-center border border-white/40 hover:border-white text-white font-body font-medium px-8 py-4 rounded-full transition-all duration-200"
-            >
-              Learn More
-            </Link>
-          </div>
+          <Link href="/book" className="cta" style={{ background: "var(--paper)", color: "var(--ink)", borderColor: "var(--paper)" }}>
+            Book a Consultation <Arrow />
+          </Link>
         </div>
       </section>
-    </>
+    </div>
   );
 }
